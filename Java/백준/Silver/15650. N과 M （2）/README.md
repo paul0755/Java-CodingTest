@@ -1,3 +1,4 @@
+```
 combination(0,0)   // depth=0, start=0
 │
 ├─ i=0 → output[0]=1
@@ -18,6 +19,7 @@ combination(0,0)   // depth=0, start=0
 └─ i=3 → output[0]=4
     └─ combination(1,4)
         └─ for문 없음 → 종료
+```
 
 
 
