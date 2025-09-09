@@ -1,3 +1,29 @@
+combination(0,0)   // depth=0, start=0
+│
+├─ i=0 → output[0]=1
+│   └─ combination(1,1)
+│       ├─ i=1 → output[1]=2 → combination(2,2) → 출력: [1,2]
+│       ├─ i=2 → output[1]=3 → combination(2,3) → 출력: [1,3]
+│       └─ i=3 → output[1]=4 → combination(2,4) → 출력: [1,4]
+│
+├─ i=1 → output[0]=2
+│   └─ combination(1,2)
+│       ├─ i=2 → output[1]=3 → combination(2,3) → 출력: [2,3]
+│       └─ i=3 → output[1]=4 → combination(2,4) → 출력: [2,4]
+│
+├─ i=2 → output[0]=3
+│   └─ combination(1,3)
+│       └─ i=3 → output[1]=4 → combination(2,4) → 출력: [3,4]
+│
+└─ i=3 → output[0]=4
+    └─ combination(1,4)
+        └─ for문 없음 → 종료
+
+
+
+
+
+
 # [Silver III] N과 M (2) - 15650 
 
 [문제 링크](https://www.acmicpc.net/problem/15650) 
