@@ -32,6 +32,14 @@ public class Main {
                 }
             }
         });
+        /*
+         * Arrays.sort(words, (a, b) -> {
+			    if (a.length() == b.length()) return a.compareTo(b);
+			    return a.length() - b.length();
+			});
+
+         * 
+         * */
 
         // 🔹 출력
         StringBuilder sb = new StringBuilder();
@@ -41,3 +49,4 @@ public class Main {
         System.out.print(sb);
     }
 }
+
