@@ -1,35 +1,51 @@
-# [Silver V] 단어 정렬 - 1181 
+🚨 틀린 부분
 
-[문제 링크](https://www.acmicpc.net/problem/1181) 
+버블 정렬로 구현
 
-### 성능 요약
+입력이 최대 20,000개 → O(N^2) 정렬은 시간 초과 확정.
 
-메모리: 24580 KB, 시간: 320 ms
+👉 반드시 Arrays.sort + Comparator (O(N log N)) 사용해야 함.
 
-### 분류
+길이가 같을 때 정렬 조건 미구현
 
-문자열, 정렬
+코드에선 길이 비교만 하고, 길이가 같을 때 사전순 비교 (compareTo) 를 안 넣음.
 
-### 제출 일자
+중복 제거 안 함
 
-2025년 9월 10일 14:41:42
+문제 조건: 같은 단어 여러 번 입력되면 한 번만 출력해야 함.
 
-### 문제 설명
+👉 HashSet 또는 LinkedHashSet 사용 필요.
 
-<p>알파벳 소문자로 이루어진 N개의 단어가 들어오면 아래와 같은 조건에 따라 정렬하는 프로그램을 작성하시오.</p>
+📌 암기해야 할 핵심 포인트
 
-<ol>
-	<li>길이가 짧은 것부터</li>
-	<li>길이가 같으면 사전 순으로</li>
-</ol>
+사전순 비교 → compareTo
 
-<p>단, 중복된 단어는 하나만 남기고 제거해야 한다.</p>
+a.compareTo(b)
 
-### 입력 
 
- <p>첫째 줄에 단어의 개수 N이 주어진다. (1 ≤ N ≤ 20,000) 둘째 줄부터 N개의 줄에 걸쳐 알파벳 소문자로 이루어진 단어가 한 줄에 하나씩 주어진다. 주어지는 문자열의 길이는 50을 넘지 않는다.</p>
+음수: a < b
 
-### 출력 
+0: 같음
 
- <p>조건에 따라 정렬하여 단어들을 출력한다.</p>
+양수: a > b
 
+정렬 기준 두 개 이상일 때 → Comparator
+
+Arrays.sort(words, (a, b) -> {
+    if (a.length() == b.length()) return a.compareTo(b);
+    return a.length() - b.length();
+});
+
+
+중복 제거 후 정렬
+
+HashSet<String> 으로 중복 제거
+
+→ toArray(new String[0])
+
+→ Arrays.sort()
+
+출력 최적화
+
+많은 단어 출력 시 System.out.println() 대신
+StringBuilder에 담았다가 한 번에 출력.
