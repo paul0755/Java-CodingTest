@@ -1,69 +1,65 @@
-# [Silver I] 미로 탐색 - 2178 
+# 📌 백준 2178 (미로 탐색) 핵심 정리
 
-[문제 링크](https://www.acmicpc.net/problem/2178) 
+## 1. 입력 처리
+- 미로는 붙은 문자열로 주어짐 → `charAt` 사용  
+```java
+map = new int[N][M];
+for (int i = 0; i < N; i++) {
+    String line = br.readLine();
+    for (int j = 0; j < M; j++) {
+        map[i][j] = line.charAt(j) - '0'; // '1' → 1, '0' → 0
+    }
+}
+```
+👉 `StringTokenizer` ❌ (공백 없음)
 
-### 성능 요약
+---
 
-메모리: 14652 KB, 시간: 116 ms
+## 2. BFS 탐색
+- 시작점 `(0,0)` 큐에 넣고 방문 처리  
+- 큐에서 꺼내며 4방향 탐색  
+- 다음 칸은 이전 칸 값 + 1 → 최단거리 기록
+```java
+Queue<int[]> q = new LinkedList<>();
+q.add(new int[]{0, 0});
+visit[0][0] = true;
 
-### 분류
+while (!q.isEmpty()) {
+    int[] cur = q.poll();
+    int x = cur[0];
+    int y = cur[1];
 
-그래프 이론, 그래프 탐색, 너비 우선 탐색, 격자 그래프
+    for (int d = 0; d < 4; d++) {
+        int nx = x + dx[d];
+        int ny = y + dy[d];
 
-### 제출 일자
+        if (nx >= 0 && ny >= 0 && nx < N && ny < M) {
+            if (!visit[nx][ny] && map[nx][ny] == 1) {
+                visit[nx][ny] = true;
+                map[nx][ny] = map[x][y] + 1; // 거리 갱신
+                q.add(new int[]{nx, ny});
+            }
+        }
+    }
+}
+System.out.println(map[N-1][M-1]);
+```
 
-2025년 9월 15일 15:12:43
+---
 
-### 문제 설명
+## 3. 사방탐색 (필수 암기)
+```java
+int[] dx = {-1, 1, 0, 0}; // 위, 아래
+int[] dy = {0, 0, -1, 1}; // 왼쪽, 오른쪽
+```
+- `x(행)` → 위/아래 이동  
+- `y(열)` → 좌/우 이동  
 
-<p>N×M크기의 배열로 표현되는 미로가 있다.</p>
+---
 
-<table class="table table-bordered" style="width:18%">
-	<tbody>
-		<tr>
-			<td style="width:3%">1</td>
-			<td style="width:3%">0</td>
-			<td style="width:3%">1</td>
-			<td style="width:3%">1</td>
-			<td style="width:3%">1</td>
-			<td style="width:3%">1</td>
-		</tr>
-		<tr>
-			<td>1</td>
-			<td>0</td>
-			<td>1</td>
-			<td>0</td>
-			<td>1</td>
-			<td>0</td>
-		</tr>
-		<tr>
-			<td>1</td>
-			<td>0</td>
-			<td>1</td>
-			<td>0</td>
-			<td>1</td>
-			<td>1</td>
-		</tr>
-		<tr>
-			<td>1</td>
-			<td>1</td>
-			<td>1</td>
-			<td>0</td>
-			<td>1</td>
-			<td>1</td>
-		</tr>
-	</tbody>
-</table>
-
-<p>미로에서 1은 이동할 수 있는 칸을 나타내고, 0은 이동할 수 없는 칸을 나타낸다. 이러한 미로가 주어졌을 때, (1, 1)에서 출발하여 (N, M)의 위치로 이동할 때 지나야 하는 최소의 칸 수를 구하는 프로그램을 작성하시오. 한 칸에서 다른 칸으로 이동할 때, 서로 인접한 칸으로만 이동할 수 있다.</p>
-
-<p>위의 예에서는 15칸을 지나야 (N, M)의 위치로 이동할 수 있다. 칸을 셀 때에는 시작 위치와 도착 위치도 포함한다.</p>
-
-### 입력 
-
- <p>첫째 줄에 두 정수 N, M(2 ≤ N, M ≤ 100)이 주어진다. 다음 N개의 줄에는 M개의 정수로 미로가 주어진다. 각각의 수들은 <strong>붙어서</strong> 입력으로 주어진다.</p>
-
-### 출력 
-
- <p>첫째 줄에 지나야 하는 최소의 칸 수를 출력한다. 항상 도착위치로 이동할 수 있는 경우만 입력으로 주어진다.</p>
-
+# ✅ 암기 포인트
+- 미로 입력은 `charAt(j) - '0'` 로 변환  
+- BFS = 큐 활용 → 최단거리 구할 때 사용  
+- 거리 기록: `map[nx][ny] = map[x][y] + 1`  
+- 사방탐색은 `dx/dy` 배열 패턴 외워두기  
+- 최종 답은 `map[N-1][M-1]`  
