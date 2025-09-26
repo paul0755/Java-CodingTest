@@ -1,52 +1,51 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 public class Main {
 	
-	static int N, M;
-	static LinkedList<Integer>[] graph;
-	static boolean[] visit;
-	static int count = 0;
-	
-	public static void main(String args[]) throws IOException {
-	
+	static int N, M, cnt=0;
+	static int[] visited;
+	static ArrayList<Integer> adj[];
+
+	public static void main(String[] args) throws Exception, IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = null;
+		StringTokenizer st;
 		
 		N = Integer.parseInt(br.readLine());
 		M = Integer.parseInt(br.readLine());
-		graph = new LinkedList[N+1];
 		
-		for(int i =1 ; i<N+1 ; i++) {
-			graph[i] = new LinkedList<>();
+		adj = new ArrayList[N+1];
+		visited = new int[N+1];
+		
+		for(int i=0; i<N+1; i++) {
+			adj[i] = new ArrayList<>();
 		}
 		
-		visit = new boolean[N+1];
 		
-		for(int i=0; i<M ; i++) {
+		for(int i=0; i<M; i++) {
 			st = new StringTokenizer(br.readLine());
-			int a = Integer.parseInt(st.nextToken());
-			int b = Integer.parseInt(st.nextToken());
-			
-			graph[a].add(b);
-			graph[b].add(a);
-		}// for
+			int x = Integer.parseInt(st.nextToken());
+			int y = Integer.parseInt(st.nextToken());
+			adj[x].add(y);
+			adj[y].add(x); // 양방향 신경쓰기
+		}
 		
 		dfs(1);
-		System.out.println(count);
 		
+		System.out.println(cnt);
 	}
-	
-	private static void dfs(int v) {
-		visit[v] = true;
-		for(int nextV : graph[v]) {
-			if(!visit[nextV]) {dfs(nextV); count++;};
+
+	private static void dfs(int x) {
+		visited[x] = 1;
+		for(int v : adj[x]) {
+			if(visited[v] == 1) continue;
+			dfs(v);
+			cnt++;
 		}
 		
 	}
-	
-	
+
 }
