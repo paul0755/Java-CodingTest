@@ -1,58 +1,53 @@
-# 📌 백준 2580 (스도쿠) 핵심 요약
+# [Gold IV] 스도쿠 - 2580 
 
-## 1. 입력
-- 9×9 보드, `0`은 빈칸
-```java
-int[][] s = new int[9][9];
-```
+[문제 링크](https://www.acmicpc.net/problem/2580) 
 
----
+### 성능 요약
 
-## 2. 백트래킹 구조
-- 빈칸이면 `1~9` 시도
-- 가능하면 → 채우고 재귀
-- 실패 시 → 원상복구
-```java
-if (col == 9) { solve(row+1, 0); return; }
-if (row == 9) { printBoard(); System.exit(0); }
+메모리: 22016 KB, 시간: 420 ms
 
-if (s[row][col] == 0) {
-    for (int num = 1; num <= 9; num++) {
-        if (canPlace(row, col, num)) {
-            s[row][col] = num;
-            solve(row, col+1);
-            s[row][col] = 0; // 백트래킹
-        }
-    }
-} else {
-    solve(row, col+1);
-}
-```
+### 분류
 
----
+구현, 백트래킹
 
-## 3. 조건 검사
-- 같은 행, 같은 열, 같은 3×3 박스에 같은 수 있으면 불가
-```java
-static boolean canPlace(int row, int col, int num) {
-    for (int i = 0; i < 9; i++) {
-        if (s[row][i] == num) return false; // 행
-        if (s[i][col] == num) return false; // 열
-    }
-    int sr = (row/3) * 3, sc = (col/3) * 3;
-    for (int i = sr; i < sr+3; i++) {
-        for (int j = sc; j < sc+3; j++) {
-            if (s[i][j] == num) return false; // 박스
-        }
-    }
-    return true;
-}
-```
+### 제출 일자
 
----
+2025년 10월 21일 11:46:37
 
-# ✅ 암기 포인트
-- `0` = 빈칸  
-- 백트래킹 = 넣기 → 재귀 → 원상복구  
-- 검사 = 행 + 열 + 3×3 박스  
-- 종료 조건 = `row == 9` → 출력 후 종료
+### 문제 설명
+
+<p>스도쿠는 18세기 스위스 수학자가 만든 '라틴 사각형'이랑 퍼즐에서 유래한 것으로 현재 많은 인기를 누리고 있다. 이 게임은 아래 그림과 같이 가로, 세로 각각 9개씩 총 81개의 작은 칸으로 이루어진 정사각형 판 위에서 이뤄지는데, 게임 시작 전 일부 칸에는 1부터 9까지의 숫자 중 하나가 쓰여 있다.</p>
+
+<p style="text-align: center;"><img alt="" src="https://upload.acmicpc.net/508363ac-0289-4a92-a639-427b10d66633/-/preview/" style="width: 240px; height: 230px;"></p>
+
+<p>나머지 빈 칸을 채우는 방식은 다음과 같다.</p>
+
+<ol>
+	<li>각각의 가로줄과 세로줄에는 1부터 9까지의 숫자가 한 번씩만 나타나야 한다.</li>
+	<li>굵은 선으로 구분되어 있는 3x3 정사각형 안에도 1부터 9까지의 숫자가 한 번씩만 나타나야 한다.</li>
+</ol>
+
+<p>위의 예의 경우, 첫째 줄에는 1을 제외한 나머지 2부터 9까지의 숫자들이 이미 나타나 있으므로 첫째 줄 빈칸에는 1이 들어가야 한다.</p>
+
+<p style="text-align: center;"><img alt="" src="https://upload.acmicpc.net/38e505c6-0452-4a56-b01c-760c85c6909b/-/preview/" style="width: 239px; height: 32px;"></p>
+
+<p>또한 위쪽 가운데 위치한 3x3 정사각형의 경우에는 3을 제외한 나머지 숫자들이 이미 쓰여있으므로 가운데 빈 칸에는 3이 들어가야 한다.</p>
+
+<p style="text-align: center;"><img alt="" src="https://upload.acmicpc.net/89873d9d-56ae-44f7-adb2-bd5d7e243016/-/preview/" style="width: 86px; height: 82px;"></p>
+
+<p>이와 같이 빈 칸을 차례로 채워 가면 다음과 같은 최종 결과를 얻을 수 있다.</p>
+
+<p style="text-align: center;"><img alt="" src="https://upload.acmicpc.net/fe68d938-770d-46ea-af71-a81076bc3963/-/preview/" style="width: 240px; height: 230px;"></p>
+
+<p>게임 시작 전 스도쿠 판에 쓰여 있는 숫자들의 정보가 주어질 때 모든 빈 칸이 채워진 최종 모습을 출력하는 프로그램을 작성하시오.</p>
+
+### 입력 
+
+ <p>아홉 줄에 걸쳐 한 줄에 9개씩 게임 시작 전 스도쿠판 각 줄에 쓰여 있는 숫자가 한 칸씩 띄워서 차례로 주어진다. 스도쿠 판의 빈 칸의 경우에는 0이 주어진다. 스도쿠 판을 규칙대로 채울 수 없는 경우의 입력은 주어지지 않는다.</p>
+
+### 출력 
+
+ <p>모든 빈 칸이 채워진 스도쿠 판의 최종 모습을 아홉 줄에 걸쳐 한 줄에 9개씩 한 칸씩 띄워서 출력한다.</p>
+
+<p>스도쿠 판을 채우는 방법이 여럿인 경우는 그 중 하나만을 출력한다.</p>
+
