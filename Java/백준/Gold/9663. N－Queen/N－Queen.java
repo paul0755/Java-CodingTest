@@ -1,49 +1,44 @@
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Main {
-	static int N, count =0;
-	static int[] pos;
 
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		
-		N = sc.nextInt();
-		pos = new int[N];
-		
-		dfs(0);
-		
-		
-		System.out.println(count);
+    static int N, cnt =0;
+    static boolean[] issued1; // 열
+    static boolean[] issued2; // 좌측하단 - 우측상단 (대각선)
+    static boolean[] issued3; // 좌측상단 - 우측하단 (대각선)
+    public static void main(String[] args) throws Exception, IOException {
+        
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-	}
-	
-	private static void dfs(int row) {
-		if(row == N) {
-			count++;
-			return;
-		}
-		
-		for(int col=0; col<N; col++) {
-			if(isValid(row, col)) {
-				pos[row] = col;
-				dfs(row+1);
-			}
-		}
-		
-	}
+        N = Integer.parseInt(br.readLine());
 
-	private static boolean isValid(int row, int col) {
-		for(int i=0; i<row; i++) {
-			if(pos[i] == col) return false;
-			if(Math.abs(row-i) == Math.abs(col-pos[i])) return false;
-		}
-		
-		return true;
-	}
+        issued1 = new boolean[N];
+        issued2 = new boolean[N+N];
+        issued3 = new boolean[N+N];
 
-	
+        dfs(0);
+        System.out.println(cnt);
+    }
+    private static void dfs(int cur) { // cur은 y좌표
+        
+        if(cur == N){
+            cnt ++;
+            return;
+        }
 
+        for(int i=0; i<N; i++){ // i는 x좌표 
+            if(issued1[i]  || issued2[i+cur]  || issued3[i-cur+N-1] )
+            continue;
+
+            issued1[i] = true;
+            issued2[i+cur] = true;
+            issued3[i-cur+N-1] = true;
+            dfs(cur+1);
+            issued1[i] = false;
+            issued2[i+cur] = false;
+            issued3[i-cur+N-1] = false;
+        }        
+    }
 }
