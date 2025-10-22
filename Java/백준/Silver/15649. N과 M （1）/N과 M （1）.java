@@ -1,53 +1,48 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
-	
-	static int N, M;
-	static int [] numbers; // 추출값
-	static boolean [] isSelected; //추출 여부
-	
-	public static void main(String[] args) throws Exception {
-		
-		
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static int N, M;
+    static boolean[] visited;
+    static List<Integer> list = new ArrayList<>();
+    public static void main(String[] args) throws IOException {
+        
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-	    StringTokenizer st = new StringTokenizer(br.readLine());
-	    N = Integer.parseInt(st.nextToken()); // 첫 번째 숫자
-	    M = Integer.parseInt(st.nextToken()); // 두 번째 숫자
-	    
-		isSelected = new boolean[N];
-		numbers = new int[M];
-		
-		permutation(0);
-		
-		br.close();
-		
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
 
-	}
+        visited = new boolean[N+1];
 
-	static void permutation(int idx) {
-		if(idx >= M) {
-			for (int i = 0; i < M; i++) {
-                System.out.print(numbers[i] + " ");
+        dfs(0);
+
+
+    }
+    private static void dfs(int depth) {
+        
+        if(depth == M){
+            StringBuilder sb =new StringBuilder();
+            for(int num : list){
+                sb.append(num).append(" ");
             }
-            System.out.println();
-			return;
-		}
-		
-		for(int i=0; i<N ; i++) {
-			if(isSelected[i]) continue;
-			
-			numbers[idx] = i+1;
-			isSelected[i] = true;
-			
-			permutation(idx+1);
-			
-			isSelected[i] = false;
-		}
-	}
+            System.out.println(sb);
+            return;
+        }
+
+        for(int i=1; i<N+1; i++){
+            if(!visited[i]){
+                visited[i] = true;
+                list.add(i);
+                dfs(depth+1);
+                visited[i] = false;
+                list.remove(list.size()-1);
+            }
+        }
+
+    }
 }
