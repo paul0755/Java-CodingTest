@@ -1,45 +1,39 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
 public class Main {
-	
-	static int N,M;
-	static int[] arr;
-	static int[] output;
-	static StringBuilder sb = new StringBuilder();
+    
+    static int N, M;
+    static List<Integer>list = new ArrayList<>();
+    static StringBuilder sb = new StringBuilder();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-	public static void main(String[] args) {
-		
-		Scanner sc = new Scanner(System.in);
-		
-		N = sc.nextInt();
-		M = sc.nextInt();
-		arr = new int[N];
-		output = new int[M];
-		
-		for(int i=0; i<N ; i++) arr[i] = i+1;
-		
-		repeatCombination(0, 0);
-		
-		System.out.println(sb);
-		
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
 
-	}
+        dfs(1, 0);
+        System.out.println(sb);
+    }
+    private static void dfs(int start , int depth) {
+        
+        if(depth == M){
+            for(int n : list){
+                sb.append(n).append(" ");
+            }
+            sb.append("\n");
+            return;
+        }
 
-	private static void repeatCombination(int depth, int start) {
-		if(depth == M) {
-			for(int i =0; i<M; i++) {
-				sb.append(output[i]).append(" ");
-			}
-			sb.append("\n");
-			return;
-		}
-		
-		
-		for(int i=start; i<N; i++) {
-			output[depth] = arr[i];
-			repeatCombination(depth+1, i);
-		}
-		
-	}
-
+        for(int i = start; i <= N; i++){
+            list.add(i);
+            dfs(i, depth+1);
+            list.remove(list.size()-1);
+        }
+    }
 }
